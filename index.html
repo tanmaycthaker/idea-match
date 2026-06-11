@@ -788,9 +788,9 @@ async function setRole(uid, role) {
 
 async function removeUser(uid) {
   if (!db) return;
-  if (!confirm('Remove this user? They will lose access immediately.')) return;
-  await db.collection('users').doc(uid).update({ role: 'revoked' });
-  showToast('User access revoked.');
+  if (!confirm('Remove this user? They will lose access and all their data will be permanently deleted.')) return;
+  await db.collection('users').doc(uid).delete();
+  showToast('User permanently deleted.');
   loadUsers();
 }
 
