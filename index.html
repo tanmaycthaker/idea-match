@@ -404,7 +404,12 @@ if (auth) {
     if (!user) { showScreen('auth-screen'); return; }
     currentUser = user;
     const snap = await db.collection('users').doc(user.uid).get();
-    if (!snap.exists) { showScreen('auth-screen'); return; }
+    if (!snap.exists) {
+      await auth.signOut();
+      showScreen('auth-screen');
+      showAuthError("No account found. Please request access to get started.");
+      return;
+    }
     currentUserData = snap.data();
     const role = currentUserData.role;
     if (role === 'pending') {
@@ -412,7 +417,9 @@ if (auth) {
     } else if (role === 'venture' || role === 'admin') {
       launchApp(role);
     } else {
-      showScreen('pending-screen');
+      await auth.signOut();
+      showScreen('auth-screen');
+      showAuthError("No account found. Please request access to get started.");
     }
   });
 }
