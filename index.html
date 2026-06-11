@@ -511,7 +511,7 @@ async function handleForgotPassword() {
   if (!email) { showAuthError('Enter your email above first, then click forgot password.'); return; }
   try {
     await auth.sendPasswordResetEmail(email);
-    showAuthSuccess('Password reset email sent — check your inbox.');
+    showAuthSuccess('If an account exists for that email, a reset link has been sent. Be sure to check your spam folder.');
   } catch(e) {
     showAuthError(friendlyError(e));
   }
